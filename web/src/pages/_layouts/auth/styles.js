@@ -29,6 +29,7 @@ export const Content = styled.div`
       padding: 15px 20px;
       font-size: 18px;
       line-height: 20px;
+      color: #fff;
 
       &::placeholder {
         color: rgba(255, 255, 255, 0.5);
