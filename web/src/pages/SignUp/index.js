@@ -3,7 +3,6 @@ import { Form, Input } from '@rocketseat/unform';
 import { Link } from 'react-router-dom';
 import { useDispatch, useSelector } from 'react-redux';
 import * as Yup from 'yup';
-import { Container } from './styles';
 import logo from '~/assets/logo.svg';
 
 const schema = Yup.object().shape({
@@ -11,7 +10,9 @@ const schema = Yup.object().shape({
   email: Yup.string()
     .email('Insira um email válido')
     .required('O e-mail é obrigatório'),
-  password: Yup.string().required('A senha é obrigatória'),
+  password: Yup.string()
+    .min(6, 'No mínimo 6 caracteres.')
+    .required('A senha é obrigatória'),
 });
 
 export default function SignUp() {
@@ -24,7 +25,7 @@ export default function SignUp() {
   }
 
   return (
-    <Container>
+    <>
       <img src={logo} alt="Meetapp" />
 
       <Form schema={schema} onSubmit={handleSubmit}>
@@ -36,9 +37,11 @@ export default function SignUp() {
           placeholder="Sua senha secreta"
         />
 
-        <button type="submit">{loading ? 'Carregando...' : 'Entrar'}</button>
+        <button type="submit">
+          {loading ? 'Carregando...' : 'Criar Conta'}
+        </button>
         <Link to="/">Já tenho Login</Link>
       </Form>
-    </Container>
+    </>
   );
 }

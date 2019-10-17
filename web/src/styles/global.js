@@ -8,17 +8,16 @@ export default createGlobalStyle`
     outline:0;
     box-sizing: border-box;
   }
+
+  *:focus{
+    outline: 0;
+  }
+
   html, body, #root{
     height: 100%;
   }
 
-  #root{
-    max-width: 1020px;
-    margin: 0 auto;
-    padding: 0 20px 50px;
-  }
   body{
-    background: transparent linear-gradient(180deg, #22202C 0%, #402845 100%) 0% 0% no-repeat padding-box;
     -webkit-font-smoothing: antaliased !important;
   }
   body, input, button {

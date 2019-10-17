@@ -3,7 +3,6 @@ import { Form, Input } from '@rocketseat/unform';
 import { Link } from 'react-router-dom';
 import { useDispatch, useSelector } from 'react-redux';
 import * as Yup from 'yup';
-import { Container } from './styles';
 import logo from '~/assets/logo.svg';
 import { signInRequest } from '~/store/modules/auth/actions';
 
@@ -24,7 +23,7 @@ export default function SignIn() {
   }
 
   return (
-    <Container>
+    <>
       <img src={logo} alt="Meetapp" />
 
       <Form schema={schema} onSubmit={handleSubmit}>
@@ -38,6 +37,6 @@ export default function SignIn() {
         <button type="submit">{loading ? 'Carregando...' : 'Entrar'}</button>
         <Link to="/register">Criar conta grátis</Link>
       </Form>
-    </Container>
+    </>
   );
 }
