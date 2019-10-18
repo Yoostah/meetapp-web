@@ -2,9 +2,10 @@ import styled from 'styled-components';
 import { darken } from 'polished';
 
 export const Container = styled.div`
-  background: #000;
+  background: rgba(0, 0, 0, 0.3);
 `;
 export const Content = styled.div`
+  width: 100%;
   height: 92px;
   max-width: 940px;
   margin: 0 auto;
@@ -60,7 +61,7 @@ export const User = styled.div`
     transition: background 0.2s;
 
     &:hover {
-      background: ${darken(0.03, '#f94d6a')};
+      background: ${darken(0.08, '#f94d6a')};
     }
   }
 `;
