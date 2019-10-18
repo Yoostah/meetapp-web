@@ -44,6 +44,7 @@ export const Content = styled.div`
       color: #fff;
       font-size: 18px;
       margin: 5px 0 15px;
+      font-weight: bold;
       border-radius: 4px;
       transition: background 0.2s;
 
@@ -57,6 +58,7 @@ export const Content = styled.div`
     font-size: 16px;
     line-height: 21px;
     transition: color 0.2s;
+    font-weight: bold;
     opacity: 0.6;
 
     &:hover {

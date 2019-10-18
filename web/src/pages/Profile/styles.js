@@ -43,6 +43,7 @@ export const Container = styled.div`
       color: #fff;
       font-size: 16px;
       line-height: 21px;
+      font-weight: bold;
       margin: 20px 0;
       border-radius: 4px;
       transition: background 0.2s;
@@ -50,6 +51,16 @@ export const Container = styled.div`
 
       &:hover {
         background: ${darken(0.08, '#f94d6a')};
+      }
+
+      div {
+        display: flex;
+        align-items: center;
+        justify-content: center;
+
+        svg {
+          margin-right: 15px;
+        }
       }
     }
   }

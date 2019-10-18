@@ -56,6 +56,7 @@ export const User = styled.div`
     border: 0;
     background: #f94d6a;
     color: #fff;
+    font-weight: bold;
     font-size: 16px;
     border-radius: 4px;
     transition: background 0.2s;
