@@ -5,7 +5,6 @@ export const Container = styled.div`
   width: 100%;
   max-width: 940px;
   margin: 0 auto;
-  text-align: center;
 
   form {
     display: flex;
