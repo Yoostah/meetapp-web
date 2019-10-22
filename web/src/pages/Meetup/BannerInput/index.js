@@ -6,7 +6,7 @@ import { Container } from './styles';
 import api from '~/services/api';
 
 export default function BannerInput(props) {
-  const { defaultValue, registerField } = useField('banner');
+  const { defaultValue, registerField } = useField('meetup_banner');
   const { setBanner } = props;
 
   const [file, setFile] = useState(defaultValue && defaultValue.id);

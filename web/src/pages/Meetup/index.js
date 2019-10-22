@@ -4,6 +4,7 @@ import * as Yup from 'yup';
 
 import { MdAddCircleOutline } from 'react-icons/md';
 import pt from 'date-fns/locale/pt';
+import { parseISO } from 'date-fns';
 import ReactDatePicker from 'react-datepicker';
 import { toast } from 'react-toastify';
 import BannerInput from './BannerInput';
@@ -19,8 +20,12 @@ const schema = Yup.object().shape({
   location: Yup.string().required('O Endereço é obrigatório.'),
 });
 
-export default function Meetup() {
-  const [startDate, setStartDate] = useState();
+export default function Meetup({ history }) {
+  const meetup = history.location.state;
+
+  const [startDate, setStartDate] = useState(
+    meetup && parseISO(meetup.schedule)
+  );
   const [banner, setBanner] = useState();
 
   async function handleSubmit({ title, description, location }) {
@@ -31,18 +36,54 @@ export default function Meetup() {
     if (!startDate) {
       toast.error('A Data é obrigatória.');
     }
-    await api.post('meetup', {
-      title,
-      description,
-      schedule: startDate,
-      location,
-      banner_id: banner,
-    });
+
+    try {
+      await api.post('meetup', {
+        title,
+        description,
+        schedule: startDate,
+        location,
+        banner_id: banner,
+      });
+
+      history.push('/dashboard');
+      toast.success('Meetup Cadastrado.');
+    } catch (error) {
+      toast.error('Falha ao cadastrar Meetup');
+    }
   }
 
+  async function handleUpdate({ title, description, location }) {
+    if (typeof banner === 'undefined') {
+      toast.error('O Banner é obrigatório.');
+    }
+
+    if (!startDate) {
+      toast.error('A Data é obrigatória.');
+    }
+
+    try {
+      await api.put(`meetup/${meetup.id}`, {
+        title,
+        description,
+        schedule: startDate,
+        location,
+        banner_id: banner,
+      });
+
+      history.push('/dashboard');
+      toast.success('Meetup Atualizado.');
+    } catch (error) {
+      toast.error('Falha ao atualizar Meetup');
+    }
+  }
   return (
     <Container>
-      <Form schema={schema} onSubmit={handleSubmit}>
+      <Form
+        schema={schema}
+        onSubmit={meetup ? handleUpdate : handleSubmit}
+        initialData={meetup}
+      >
         <BannerInput name="banner_id" setBanner={setBanner} />
         <Input name="title" type="text" placeholder="Título do Meetup" />
         <Input multiline name="description" placeholder="Descrição completa" />
@@ -56,7 +97,7 @@ export default function Meetup() {
           timeIntervals={15}
           timeCaption="Horário"
           placeholderText="Data do Meetup"
-          dateFormat="d 'de' MMMM ', às' H'h'"
+          dateFormat="d 'de' MMMM ', às' H:mm'h'"
           locale={pt}
           autoComplete="off"
         />
