@@ -5,8 +5,9 @@ import { MdCameraAlt } from 'react-icons/md';
 import { Container } from './styles';
 import api from '~/services/api';
 
-export default function BannerInput() {
-  const { defaultValue, registerField } = useField('avatar');
+export default function BannerInput(props) {
+  const { defaultValue, registerField } = useField('banner');
+  const { setBanner } = props;
 
   const [file, setFile] = useState(defaultValue && defaultValue.id);
   const [preview, setPreview] = useState(defaultValue && defaultValue.url);
@@ -23,6 +24,10 @@ export default function BannerInput() {
     }
   }, [ref]); // eslint-disable-line
 
+  useEffect(() => {
+    setBanner(file);
+  }, [file, setBanner]);
+
   async function handleChange(e) {
     const data = new FormData();
 
@@ -37,8 +42,8 @@ export default function BannerInput() {
   }
 
   return (
-    <Container>
-      <label htmlFor="banner">
+    <Container name="banner_id">
+      <label htmlFor="banner_id">
         {preview && <img src={preview} alt="imagem banner" />}
 
         {!preview && (
@@ -50,9 +55,11 @@ export default function BannerInput() {
 
         <input
           type="file"
-          id="banner"
+          id="banner_id"
           accept="image/*"
+          data-file={file}
           onChange={handleChange}
+          ref={ref}
         />
       </label>
     </Container>
