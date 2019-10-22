@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { Link } from 'react-router-dom';
-import { MdChevronRight } from 'react-icons/md';
+import { MdAddCircleOutline, MdChevronRight } from 'react-icons/md';
 import { format, parseISO } from 'date-fns';
 import pt from 'date-fns/locale/pt';
 
@@ -9,7 +9,7 @@ import api from '~/services/api';
 import { Container, Meetup } from './styles';
 
 export default function Dashboard() {
-  const [meetups, setMeetups] = useState();
+  const [meetups, setMeetups] = useState([]);
   // const [dataAtual, setDate] = useState(new Date());
 
   useEffect(() => {
@@ -26,29 +26,28 @@ export default function Dashboard() {
           }
         ),
       }));
-
       setMeetups(formattedMeetup);
     }
     loadMyMeetups();
   }, [setMeetups]);
+
   return (
     <Container>
       <header>
         <strong>MEUS MEETUPS</strong>
-        <button type="button">
-          <div>
-            <MdChevronRight size={20} color="#FFF" />
-            Novo Meetup
-          </div>
-        </button>
+        <Link to="/meetup">
+          <button type="button">
+            <div>
+              <MdAddCircleOutline size={20} color="#FFF" />
+              Novo Meetup
+            </div>
+          </button>
+        </Link>
       </header>
       <ul>
-        {meetups ? (
+        {meetups.length > 0 ? (
           meetups.map(meetup => (
-            <Link
-              to={`/details/${encodeURIComponent(meetup.id)}`}
-              key={meetup.id}
-            >
+            <Link to={`/details/${meetup.id}`} key={meetup.id}>
               <Meetup>
                 <strong>{meetup.title}</strong>
                 <div>

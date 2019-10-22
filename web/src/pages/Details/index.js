@@ -1,38 +1,88 @@
 import React, { useState, useEffect } from 'react';
+import { MdModeEdit, MdDeleteForever, MdEvent, MdPlace } from 'react-icons/md';
+import PropTypes from 'prop-types';
+import { format, parseISO } from 'date-fns';
+import pt from 'date-fns/locale/pt';
 
-import { Container } from './styles';
+import api from '~/services/api';
+import history from '~/services/history';
+
+import { Container, Meetup } from './styles';
 
 export default function Details(props) {
   const { match } = props;
-  const [meetupData, setMeetupData] = useState();
+  const [meetup, setMeetup] = useState({});
+  const [bannerUrl, setBanner] = useState();
 
   useEffect(() => {
     async function getMeetupData() {
-      const meetupID = decodeURIComponent(match.params.meetup);
-      setMeetupData(meetupID);
-      /* const [repository, issues] = await Promise.all([
-        api.get(`/repos/${repoName}`),
-        api.get(`/repos/${repoName}/issues`, {
-          params: {
-            state: selectedOption,
-            per_page: 5,
-            page: page !== 0 ? page : undefined,
-          },
-        }),
-      ]); */
+      const meetupID = match.params.meetup;
 
-      /* this.setState({
-        repository: repository.data,
-        issues: issues.data,
-        loading: false,
-      }); */
+      const response = await api.get(`/meetup/${meetupID}`);
+
+      const formattedMeetup = Object.assign({}, response.data, {
+        formattedDate: format(
+          parseISO(response.data.schedule),
+          "d 'de' MMMM ', às' HH:mm'h'",
+          {
+            locale: pt,
+          }
+        ),
+      });
+
+      const { url } = response.data.meetup_banner;
+      setMeetup(formattedMeetup);
+      setBanner(url);
     }
-
     getMeetupData();
   }, [match.params.meetup]);
+
+  async function handleCancel(meetupID) {
+    await api.delete(`/meetup/${meetupID}`);
+    history.push('/');
+  }
+
   return (
     <Container>
-      <strong>Detalhes {meetupData}</strong>
+      <Meetup>
+        <header>
+          <strong>{meetup.title}</strong>
+          <div>
+            <button type="button">
+              <div>
+                <MdModeEdit size={20} color="#FFF" />
+                Editar
+              </div>
+            </button>
+            <button type="button" onClick={() => handleCancel(meetup.id)}>
+              <div>
+                <MdDeleteForever size={20} color="#FFF" />
+                Cancelar
+              </div>
+            </button>
+          </div>
+        </header>
+        <img src={bannerUrl} alt="Meetup_Banner" />
+        <p>{meetup.description}</p>
+        <div>
+          <span>
+            <MdEvent size={20} color="#FFF" />
+            <p>{meetup.formattedDate}</p>
+          </span>
+          <span>
+            <MdPlace size={20} color="#FFF" />
+            <p>{meetup.location}</p>
+          </span>
+        </div>
+      </Meetup>
     </Container>
   );
 }
+
+Details.propTypes = {
+  match: PropTypes.shape({
+    params: PropTypes.shape({
+      meetup: PropTypes.string,
+    }),
+  }).isRequired,
+};
