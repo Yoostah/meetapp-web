@@ -63,4 +63,11 @@ export const Container = styled.div`
       }
     }
   }
+  span {
+    font-size: 12px;
+    color: rgba(255, 255, 255, 0.6);
+    align-self: flex-start;
+    margin: 0 0 5px 5px;
+    font-weight: bold;
+  }
 `;

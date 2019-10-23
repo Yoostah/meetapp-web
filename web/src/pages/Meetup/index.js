@@ -31,10 +31,12 @@ export default function Meetup({ history }) {
   async function handleSubmit({ title, description, location }) {
     if (typeof banner === 'undefined') {
       toast.error('O Banner é obrigatório.');
+      return;
     }
 
     if (!startDate) {
       toast.error('A Data é obrigatória.');
+      return;
     }
 
     try {
